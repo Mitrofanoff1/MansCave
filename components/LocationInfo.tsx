@@ -58,7 +58,7 @@ export default function LocationInfo() {
                 alt=""
                 width={794}
                 height={1078}
-                className="h-20 lg:h-24 w-auto opacity-25 grayscale pointer-events-none select-none"
+                className="h-20 lg:h-24 w-auto opacity-25 grayscale pointer-events-none select-none rotate-[14deg]"
                 unoptimized
               />
             </div>
