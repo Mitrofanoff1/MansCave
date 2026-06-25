@@ -56,6 +56,11 @@ export default async function ArticlePage({
 
   const related = getRelated(slug);
 
+  // Внутри статьи дублируем заглавное фото (после вступления),
+  // прежние картинки-вставки в контенте больше не показываем.
+  const heroSrc = `/blog/${article.slug}/hero.jpg`;
+  const contentBlocks = article.content.filter((b) => b.type !== "image");
+
   // ── JSON-LD: статья, хлебные крошки, FAQ ──
   const articleLd = {
     "@context": "https://schema.org",
@@ -142,8 +147,18 @@ export default async function ArticlePage({
           </div>
         </header>
 
+        {/* Заглавное фото статьи — после вступления (превью) */}
+        <figure className="mt-8 mb-10 mx-auto max-w-md">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={heroSrc}
+            alt={article.heroAlt}
+            className="w-full aspect-[4/5] object-cover rounded-2xl border border-white/10 bg-[#111010]"
+          />
+        </figure>
+
         {/* Контент */}
-        <ArticleContent blocks={article.content} />
+        <ArticleContent blocks={contentBlocks} />
 
         {/* FAQ */}
         {article.faq && article.faq.length > 0 && (
