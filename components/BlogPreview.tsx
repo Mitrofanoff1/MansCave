@@ -25,7 +25,7 @@ export default function BlogPreview() {
               Блог Men&apos;s Cave
             </p>
             <h2 className="text-3xl lg:text-5xl font-black uppercase tracking-tighter leading-tight">
-              Полезное о <span className="text-accent">груминге</span>
+              Журнал <span className="text-accent">барбершопа</span>
             </h2>
           </div>
           <Link

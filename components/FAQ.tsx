@@ -95,7 +95,7 @@ export default function FAQ() {
 
         <div className="text-center mb-10 lg:mb-14">
           <h2 className="text-3xl lg:text-5xl font-black uppercase tracking-tighter">
-            Частые вопросы к <span className="text-accent">барбершопу</span>
+            Ответы<span className="inline-block w-[0.28em]" />на<span className="inline-block w-[0.28em]" />частые<span className="inline-block w-[0.28em]" /><span className="text-accent">вопросы</span>
           </h2>
         </div>
 

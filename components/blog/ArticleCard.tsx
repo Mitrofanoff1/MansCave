@@ -17,13 +17,13 @@ export default function ArticleCard({ article, featured = false }: Props) {
       className="group flex flex-col rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden hover:border-accent/40 hover:bg-white/[0.04] transition-all"
     >
       {/* Плейсхолдер обложки */}
-      <div className="relative w-full aspect-[16/10] bg-[#111010] overflow-hidden">
+      <div className="relative w-full aspect-[4/5] bg-[#111010] overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`/blog/${article.slug}/hero.jpg`}
           alt={article.heroAlt}
           loading="lazy"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
             (e.currentTarget as HTMLImageElement).style.display = "none";
           }}

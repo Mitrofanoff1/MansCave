@@ -6,7 +6,7 @@ import Hero from "@/components/Hero";
 import LocationInfo from "@/components/LocationInfo";
 import About from "@/components/About";
 import Services from "@/components/Services";
-import Works from "@/components/Works";
+
 import Reviews from "@/components/Reviews";
 import Social from "@/components/Social";
 import FAQ from "@/components/FAQ";
@@ -25,7 +25,7 @@ export default function Home() {
       <Services />
       <About />
       <Reviews />
-      <Works />
+      {/* Works photos merged into About section */}
       <Social />
       <FAQ />
       <BlogPreview />

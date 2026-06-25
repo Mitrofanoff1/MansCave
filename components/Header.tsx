@@ -19,7 +19,7 @@ const navLinks = [
   { name: 'Услуги', href: '/#services' },
   { name: 'О нас', href: '/#about' },
   { name: 'Отзывы', href: '/#reviews' },
-  { name: 'До/После', href: '/#works' },
+  { name: 'До/После', href: '/#about' },
   { name: 'Статьи', href: '/blog' },
   { name: 'Контакты', href: '/#footer' },
 ];
