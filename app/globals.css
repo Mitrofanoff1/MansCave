@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  /* Фирменные цвета барбершопа */
+  --accent: #E8732A;
+  --dark: #1C1A19;
+  --foreground: #FFFFFF;
+  --background: #1C1A19;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-feature-settings: "kern" 1;
+}
+
+/* Цвет выделения текста */
+::selection {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+/* Мягкий фокус для кнопок и инпутов */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Скроллбар в стиле барбершопа */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1C1A19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 5px;
+  border: 2px solid #1C1A19;
+}
+
+html {
+  scroll-behavior: smooth !important;
+}
+
+/* Чтобы заголовок блока не прятался под шапку при прокрутке */
+section {
+  scroll-margin-top: 100px;
+}
+
+/* Анимация вращения для круглого бейджа "Записаться онлайн" */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 16s linear infinite;
+}
+
+/* Мягкая пульсация для кнопки быстрой связи */
+@keyframes pulse-slow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 115, 42, 0.5); }
+  50% { box-shadow: 0 0 0 12px rgba(232, 115, 42, 0); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 2.5s ease-out infinite;
+}
+
+/* Ken Burns — медленный зум на активном фото */
+@keyframes ken-burns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
+.animate-ken-burns {
+  animation: ken-burns 6s ease-out forwards;
+}
+
+/* Медленная пульсация для виджета записи */
+@keyframes ping-slow {
+  0% { transform: scale(1); opacity: 0.6; }
+  70% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.animate-ping-slow {
+  animation: ping-slow 2s ease-out infinite;
+}
+
+/* Скрыть полосу прокрутки для горизонтальных списков (категории услуг) */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
