@@ -16,11 +16,12 @@ const branches = [
 ];
 
 const navLinks = [
-  { name: 'Услуги', href: '#services' },
-  { name: 'О нас', href: '#about' },
-  { name: 'Отзывы', href: '#reviews' },
-  { name: 'До/После', href: '#works' },
-  { name: 'Контакты', href: '#footer' },
+  { name: 'Услуги', href: '/#services' },
+  { name: 'О нас', href: '/#about' },
+  { name: 'Отзывы', href: '/#reviews' },
+  { name: 'До/После', href: '/#works' },
+  { name: 'Статьи', href: '/blog' },
+  { name: 'Контакты', href: '/#footer' },
 ];
 
 export default function Header({ isMenuOpen, setIsMenuOpen }: HeaderProps) {
