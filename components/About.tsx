@@ -290,9 +290,12 @@ export default function About() {
             </button>
           </div>
 
-          <p className="flex items-center justify-center gap-1.5 text-center text-sm text-white/50 mt-6">
-            Ознакомиться с реальными работами наших мастеров можно тут
-            <ArrowRight size={16} className="text-accent shrink-0" />
+          <p className="text-center text-sm text-white/50 mt-6">
+            Ознакомиться с реальными работами наших мастеров можно{' '}
+            <span className="whitespace-nowrap">
+              тут
+              <ArrowRight size={16} className="inline-block align-middle ml-1 text-accent" />
+            </span>
           </p>
 
           <div className="flex justify-center mt-6">
