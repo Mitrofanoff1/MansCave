@@ -76,7 +76,7 @@ export default function Services() {
 
         <div className="text-center mb-8 lg:mb-12">
           <h2 className="text-3xl lg:text-5xl font-black uppercase tracking-tighter">
-            Наши<span className="inline-block w-3 lg:w-4" /><span className="text-accent">услуги</span>
+            Наши<span className="inline-block w-[0.28em]" /><span className="text-accent">услуги</span>
           </h2>
         </div>
 

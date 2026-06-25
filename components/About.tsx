@@ -29,6 +29,7 @@ export default function About() {
   const aboutActiveRef = useRef(0);
   const aboutIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const aboutTouchX = useRef<number | null>(null);
+  const aboutBoxRef = useRef<HTMLDivElement>(null);
 
   const [workActive, setWorkActive] = useState(0);
   const [workDir, setWorkDir] = useState(0);
@@ -61,9 +62,31 @@ export default function About() {
     scheduleAbout();
   }, [scheduleAbout]);
 
+  // Автослайд работает только пока блок виден на экране.
+  // Как только блок появляется — начинаем с первой фотографии.
+  // Когда блока нет в кадре — листание останавливается.
   useEffect(() => {
-    scheduleAbout();
-    return () => { if (aboutIntervalRef.current) clearInterval(aboutIntervalRef.current); };
+    const el = aboutBoxRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAboutDir(0);
+          setAboutActive(0);
+          aboutActiveRef.current = 0;
+          scheduleAbout();
+        } else if (aboutIntervalRef.current) {
+          clearInterval(aboutIntervalRef.current);
+          aboutIntervalRef.current = null;
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      if (aboutIntervalRef.current) clearInterval(aboutIntervalRef.current);
+    };
   }, [scheduleAbout]);
 
   const goWork = useCallback((i: number, dir?: number) => {
@@ -108,8 +131,8 @@ export default function About() {
             </div>
           </div>
 
-          {/* Фото-слайдер О нас (автослайд) */}
-          <div>
+          {/* Фото-слайдер О нас (автослайд, пока блок виден) */}
+          <div ref={aboutBoxRef}>
             <div className="flex gap-3 lg:gap-4">
               <div
                 className="relative flex-1 aspect-[4/3] lg:aspect-[5/4] rounded-3xl overflow-hidden border border-white/10 shadow-2xl cursor-grab active:cursor-grabbing"
@@ -201,7 +224,7 @@ export default function About() {
         <div className="mt-14 lg:mt-20">
           <div className="text-center mb-8">
             <h3 className="text-2xl lg:text-4xl font-black uppercase tracking-tighter">
-              Наши<span className="inline-block w-2 lg:w-3" /><span className="text-accent">работы</span>
+              Наши<span className="inline-block w-[0.28em]" /><span className="text-accent">работы</span>
             </h3>
           </div>
 
