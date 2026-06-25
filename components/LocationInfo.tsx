@@ -56,8 +56,8 @@ export default function LocationInfo() {
               <Image
                 src="/yandex-badge.png"
                 alt=""
-                width={460}
-                height={329}
+                width={260}
+                height={350}
                 className="h-20 lg:h-24 w-auto opacity-25 grayscale pointer-events-none select-none"
                 unoptimized
               />
