@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 
 const aboutPhotos = [
   '/about-4.webp',
@@ -253,43 +253,46 @@ export default function About() {
                 />
               </motion.div>
             </AnimatePresence>
+          </div>
 
+          {/* Управление — стрелки по бокам от полосок, как в блоке «О нас» */}
+          <div className="flex items-center gap-4 max-w-5xl mx-auto mt-5">
             <button
               onClick={() => goWork(workActive - 1, -1)}
               aria-label="Предыдущая работа"
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center hover:bg-accent hover:border-accent transition-all"
+              className="w-11 h-11 shrink-0 rounded-full border border-white/15 flex items-center justify-center hover:border-accent hover:text-accent transition-colors"
             >
               <ChevronLeft size={20} />
             </button>
+            <div className="flex-1 flex gap-1.5">
+              {workPhotos.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goWork(i)}
+                  aria-label={`Работа ${i + 1}`}
+                  className="flex-1 h-[3px] rounded-full bg-white/10 overflow-hidden"
+                >
+                  <motion.span
+                    className="block h-full rounded-full bg-accent"
+                    initial={false}
+                    animate={{ width: i === workActive ? '100%' : '0%' }}
+                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  />
+                </button>
+              ))}
+            </div>
             <button
               onClick={() => goWork(workActive + 1, 1)}
               aria-label="Следующая работа"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center hover:bg-accent hover:border-accent transition-all"
+              className="w-11 h-11 shrink-0 rounded-full border border-white/15 flex items-center justify-center hover:border-accent hover:text-accent transition-colors"
             >
               <ChevronRight size={20} />
             </button>
           </div>
 
-          <div className="flex gap-1.5 max-w-5xl mx-auto mt-5">
-            {workPhotos.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goWork(i)}
-                aria-label={`Работа ${i + 1}`}
-                className="flex-1 h-[3px] rounded-full bg-white/10 overflow-hidden"
-              >
-                <motion.span
-                  className="block h-full rounded-full bg-accent"
-                  initial={false}
-                  animate={{ width: i === workActive ? '100%' : '0%' }}
-                  transition={{ duration: 0.4, ease: 'easeInOut' }}
-                />
-              </button>
-            ))}
-          </div>
-
-          <p className="text-center text-sm text-white/50 mt-6">
+          <p className="flex items-center justify-center gap-1.5 text-center text-sm text-white/50 mt-6">
             Ознакомиться с реальными работами наших мастеров можно тут
+            <ArrowRight size={16} className="text-accent shrink-0" />
           </p>
 
           <div className="flex justify-center mt-6">
