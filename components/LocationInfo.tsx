@@ -52,13 +52,13 @@ export default function LocationInfo() {
               <p className="text-xs text-white/50 uppercase tracking-wide">Рейтинг в Яндекс</p>
               <p className="text-[10px] text-white/30 uppercase tracking-wide">Награда «Хорошее место» 2026</p>
             </div>
-            <div className="w-14 lg:w-16 flex justify-end shrink-0">
+            <div className="w-24 lg:w-32 flex justify-end shrink-0">
               <Image
                 src="/yandex-badge.png"
                 alt=""
-                width={794}
-                height={1078}
-                className="h-20 lg:h-24 w-auto opacity-25 grayscale pointer-events-none select-none rotate-[14deg]"
+                width={460}
+                height={329}
+                className="w-full h-auto opacity-25 grayscale pointer-events-none select-none"
                 unoptimized
               />
             </div>
