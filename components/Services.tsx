@@ -62,12 +62,27 @@ export default function Services() {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const touchStartX = useRef<number | null>(null);
 
   const select = (i: number) => {
     tabRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     if (i === active) return;
     setDirection(i > active ? 1 : -1);
     setActive(i);
+  };
+
+  // Свайп по прайс-листу: влево — следующая категория, вправо — предыдущая
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) select(Math.min(active + 1, categories.length - 1));
+      else select(Math.max(active - 1, 0));
+    }
+    touchStartX.current = null;
   };
 
   return (
@@ -106,9 +121,17 @@ export default function Services() {
           ))}
         </div>
 
+        <p className="lg:hidden text-center text-[11px] text-white/30 uppercase tracking-wider mb-3">
+          ‹ листайте прайс свайпом ›
+        </p>
+
         <div className="lg:grid lg:grid-cols-2 lg:gap-10 lg:items-stretch">
           {/* Прайс-лист */}
-          <div className="relative bg-[#252220] rounded-3xl border border-white/10 shadow-2xl p-5 lg:p-10 max-w-3xl mx-auto lg:max-w-none lg:mx-0 overflow-hidden lg:min-h-[640px]">
+          <div
+            className="relative bg-[#252220] rounded-3xl border border-white/10 shadow-2xl p-5 lg:p-10 max-w-3xl mx-auto lg:max-w-none lg:mx-0 overflow-hidden lg:min-h-[640px] touch-pan-y"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             <div className="flex items-center justify-between gap-3 lg:gap-6 mb-3 pb-3 border-b border-white/10 whitespace-nowrap">
               <span className="text-sm lg:text-base uppercase font-black text-white/40">Прайс-лист</span>
               <div className="flex items-center gap-3 lg:gap-6 shrink-0 text-[9px] lg:text-xs uppercase text-white/40 font-bold">
