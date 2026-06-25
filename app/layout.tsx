@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
+// Локальный шрифт Inter (variable) — чтобы сборка не зависела от Google Fonts
+// (на российском хостинге Google недоступен, next/font/google падает по таймауту)
+const inter = localFont({
+  src: "./fonts/InterVariable.woff2",
+  display: "swap",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://xn----7sbcbut1ajfegice8bxe.xn--p1ai'),
