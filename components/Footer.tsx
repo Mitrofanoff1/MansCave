@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Phone, MapPin, Map } from 'lucide-react';
+import siteContent from '@/content/site-content.json';
 
 export default function Footer() {
   return (
@@ -85,7 +86,7 @@ export default function Footer() {
               <Map size={16} className="text-white/60" />
             </a>
           </div>
-          <p className="text-xs text-white/25">* акция при первом посещении</p>
+          <p className="text-xs text-white/25">* {siteContent.offer.note}</p>
         </div>
       </div>
 

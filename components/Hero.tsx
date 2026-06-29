@@ -2,6 +2,9 @@
 
 import React from 'react';
 import { Play } from 'lucide-react';
+import siteContent from '@/content/site-content.json';
+
+const { offer } = siteContent;
 
 export default function Hero() {
   return (
@@ -35,7 +38,7 @@ export default function Hero() {
           </div>
 
           <h1 className="text-[1.7rem] leading-[1.15] sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 uppercase tracking-tighter">
-            Запишись на стрижку и получи <span className="text-accent">удаление волос горячим воском</span> в подарок<span className="text-accent">*</span>
+            {offer.before} <span className="text-accent">{offer.gift}</span> {offer.after}<span className="text-accent">*</span>
           </h1>
 
 

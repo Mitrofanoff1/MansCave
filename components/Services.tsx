@@ -3,60 +3,11 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import siteContent from '@/content/site-content.json';
 
-interface PriceItem {
-  name: string;
-  barber?: string;
-  top?: string;
-}
-
-const categories: { name: string; items: PriceItem[] }[] = [
-  {
-    name: 'Стрижки',
-    items: [
-      { name: 'Удлиненная мужская стрижка', barber: '2100₽', top: '2300₽' },
-      { name: 'Мужская стрижка', barber: '1700₽', top: '1900₽' },
-      { name: 'Стрижка машинкой', barber: '1100₽', top: '1300₽' },
-      { name: 'Детская стрижка', barber: '1100₽', top: '1300₽' },
-      { name: 'Детская удлиненная стрижка', barber: '1500₽', top: '1700₽' },
-      { name: 'Подростковая стрижка', barber: '1400₽', top: '1600₽' },
-      { name: 'Пробор / Окантовка', barber: '600₽', top: '700₽' },
-      { name: 'Укладка', barber: '500₽', top: '700₽' },
-      { name: 'Hair tattoo', top: 'от 500₽' },
-    ],
-  },
-  {
-    name: 'Бритье',
-    items: [
-      { name: 'Моделирование бороды', barber: '1300₽', top: '1500₽' },
-      { name: 'Влажное бритье', barber: '1400₽', top: '1600₽' },
-      { name: 'Бритье головы', barber: '1400₽', top: '1600₽' },
-      { name: 'Стрижка усов', barber: '300₽', top: '500₽' },
-    ],
-  },
-  {
-    name: 'Комплексы',
-    items: [
-      { name: 'Мужская стрижка и моделирование бороды', barber: '2700₽', top: '3100₽' },
-      { name: 'Мужская и детская стрижка', barber: '2700₽', top: '3000₽' },
-      { name: 'Мужская удлиненная стрижка и моделирование бороды', barber: '3000₽', top: '3300₽' },
-      { name: 'Мужская стрижка, моделирование и тонирование бороды', barber: '3600₽', top: '4000₽' },
-      { name: 'Приходи с другом', barber: '3200₽', top: '3600₽' },
-    ],
-  },
-  {
-    name: 'Уход',
-    items: [
-      { name: 'Очищающий уход для лица (скраббинг и black mask)', barber: '1100₽', top: '1400₽' },
-      { name: 'Тонирование бороды', barber: 'от 1200₽', top: 'от 1400₽' },
-      { name: 'Тонирование волос', barber: 'от 1300₽', top: 'от 1500₽' },
-      { name: 'Биозавивка', top: 'от 7000₽' },
-      { name: 'Окрашивание волос (блондирование)', top: 'от 7500₽' },
-      { name: 'Удаление волос горячим воском', barber: '300₽', top: '400₽' },
-      { name: 'Патчи', barber: '300₽', top: '300₽' },
-    ],
-  },
-];
+// Прайс берётся из Supabase (запекается в content/site-content.json при сборке)
+type PriceItem = { name: string; barber: string | null; top: string | null };
+const categories = siteContent.categories as { name: string; items: PriceItem[] }[];
 
 export default function Services() {
   const [active, setActive] = useState(0);
