@@ -121,10 +121,6 @@ export default function Services() {
           ))}
         </div>
 
-        <p className="lg:hidden text-center text-[11px] text-white/30 uppercase tracking-wider mb-3">
-          ‹ листайте прайс свайпом ›
-        </p>
-
         <div className="lg:grid lg:grid-cols-2 lg:gap-10 lg:items-stretch">
           {/* Прайс-лист */}
           <div
