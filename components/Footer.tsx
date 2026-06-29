@@ -65,10 +65,14 @@ export default function Footer() {
                 <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1.01-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.61v1.575c0 .44-.14.703-1.295.703-1.905 0-4.013-1.15-5.498-3.3C4.897 11.232 4.3 9.156 4.3 8.65c0-.254.102-.49.61-.49h1.744c.457 0 .627.203.813.678.889 2.57 2.37 4.826 2.98 4.826.228 0 .33-.103.33-.67v-2.62c-.066-1.193-.7-1.295-.7-1.727 0-.203.166-.407.432-.407h2.745c.381 0 .51.203.51.652v3.54c0 .38.17.508.28.508.228 0 .42-.128.838-.547 1.295-1.447 2.218-3.677 2.218-3.677.127-.254.33-.49.788-.49h1.744c.525 0 .64.27.525.65-.22.99-2.37 4.09-2.37 4.09-.178.304-.254.44 0 .78.178.254.762.775 1.15 1.244.712.81 1.26 1.49 1.41 1.955.127.457-.102.69-.59.69z"/>
               </svg>
             </a>
-            <a href="https://t.me/menscavespb" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-9 h-9 rounded-xl bg-white/5 hover:bg-[#29B6F6] flex items-center justify-center transition-colors">
+            <a href="https://t.me/menscaveMurino" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-9 h-9 rounded-xl bg-white/5 hover:bg-[#29B6F6] flex items-center justify-center transition-colors">
               <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-white/60">
                 <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.02 9.524c-.148.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.19 13.98l-2.95-.924c-.642-.2-.655-.642.136-.953l11.527-4.447c.535-.194 1.003.13.659.592z"/>
               </svg>
+            </a>
+            {/* MAX */}
+            <a href="https://max.ru/u/f9LHodD0cOJhrReEVmIyWpPpJeK3XI70CODDaX4YI2vwRIVPHw1b5gcTtWg" target="_blank" rel="noopener noreferrer" aria-label="MAX" className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center transition-transform hover:scale-105">
+              <Image src="/max.png" alt="MAX" width={36} height={36} unoptimized className="w-full h-full object-cover" />
             </a>
             {/* Яндекс Карты */}
             <a href="https://yandex.ru/maps/-/CTEDfJP1" target="_blank" rel="noopener noreferrer" aria-label="Яндекс.Карты" className="w-9 h-9 rounded-xl bg-white/5 hover:bg-[#FC3F1D] flex items-center justify-center transition-colors">
