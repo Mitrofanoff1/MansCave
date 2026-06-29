@@ -1,0 +1,39 @@
+name: Sync content from Supabase
+
+# Каждую ночь подтягивает прайс и оффер из Supabase.
+# Если данные изменились — коммитит и пушит, Amvera пересобирает сайт.
+# Если нет — ничего не делает.
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # ежедневно ~04:00 по Москве (01:00 UTC)
+  workflow_dispatch: {} # ручной запуск кнопкой в GitHub (вкладка Actions)
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Обновить content из Supabase
+        run: node scripts/fetch-content.mjs
+
+      - name: Закоммитить и запушить, если данные изменились
+        run: |
+          if [ -n "$(git status --porcelain content/site-content.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add content/site-content.json
+            git commit -m "chore(content): обновление прайса/оффера из Supabase"
+            git push
+            echo "✅ Данные изменились — запушено, Amvera пересоберёт сайт."
+          else
+            echo "ℹ️ Изменений в Supabase нет — пересборка не нужна."
+          fi
