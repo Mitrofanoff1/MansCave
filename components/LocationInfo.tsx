@@ -2,10 +2,13 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { Check, ArrowUpRight } from 'lucide-react';
 
 const locations = [
-  { name: 'Филиал в Мурино:', address: 'Воронцовский бульвар, 22', mapLink: '#' },
-  { name: 'Филиал в Буграх:', address: 'улица Шекспира, 1к1', mapLink: '#' },
+  // current: true — филиал, на сайте которого мы сейчас (выбранная кнопка)
+  { name: 'Филиал в Мурино', address: 'Воронцовский бульвар, 22', href: '/', current: true },
+  // TODO: вписать ссылку на сайт филиала в Буграх, когда он будет готов
+  { name: 'Филиал в Буграх', address: 'улица Шекспира, 1к1', href: '#', current: false },
 ];
 
 export default function LocationInfo() {
@@ -16,19 +19,38 @@ export default function LocationInfo() {
 
           {/* Адреса */}
           <div className="flex items-center justify-between gap-3 lg:pr-8 lg:flex-1">
-            <div className="flex flex-col gap-3 min-w-0">
-              {locations.map((loc) => (
-                <a
-                  key={loc.name}
-                  href={loc.mapLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group -m-2 p-2 rounded-xl transition-colors hover:bg-white/5"
-                >
-                  <p className="text-sm font-black uppercase tracking-wide text-accent">{loc.name}</p>
-                  <p className="text-sm lg:text-base text-white/70 font-medium transition-colors group-hover:text-white">{loc.address}</p>
-                </a>
-              ))}
+            <div className="flex flex-col gap-2.5 flex-1 min-w-0">
+              {locations.map((loc) =>
+                loc.current ? (
+                  // Выбранный филиал (текущий сайт)
+                  <div
+                    key={loc.name}
+                    aria-current="true"
+                    className="relative rounded-xl bg-accent/15 ring-1 ring-accent/50 px-3.5 py-2.5"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xs font-black uppercase tracking-wide text-accent">{loc.name}</p>
+                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-accent px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-white">
+                        <Check size={10} strokeWidth={3} /> Вы здесь
+                      </span>
+                    </div>
+                    <p className="text-sm lg:text-base text-white font-semibold mt-0.5">{loc.address}</p>
+                  </div>
+                ) : (
+                  // Другой филиал — переключаемый
+                  <a
+                    key={loc.name}
+                    href={loc.href}
+                    className="group rounded-xl border border-white/10 px-3.5 py-2.5 hover:border-accent/40 hover:bg-white/5 transition-colors"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xs font-black uppercase tracking-wide text-white/45 group-hover:text-accent transition-colors">{loc.name}</p>
+                      <ArrowUpRight size={15} className="shrink-0 text-white/30 group-hover:text-accent transition-colors" />
+                    </div>
+                    <p className="text-sm lg:text-base text-white/55 font-medium mt-0.5">{loc.address}</p>
+                  </a>
+                )
+              )}
             </div>
             <div className="w-14 lg:w-16 flex justify-end shrink-0">
               <Image
