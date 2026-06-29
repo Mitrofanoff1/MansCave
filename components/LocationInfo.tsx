@@ -2,13 +2,13 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Check, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 const locations = [
-  // current: true — филиал, на сайте которого мы сейчас (выбранная кнопка)
-  { name: 'Филиал в Мурино', address: 'Воронцовский бульвар, 22', href: '/', current: true },
+  // current: true — филиал, на сайте которого мы сейчас (подсвечен как выбранный)
+  { name: 'Филиал в Мурино:', address: 'Воронцовский бульвар, 22', href: '/', current: true },
   // TODO: вписать ссылку на сайт филиала в Буграх, когда он будет готов
-  { name: 'Филиал в Буграх', address: 'улица Шекспира, 1к1', href: '#', current: false },
+  { name: 'Филиал в Буграх:', address: 'улица Шекспира, 1к1', href: '#', current: false },
 ];
 
 export default function LocationInfo() {
@@ -19,35 +19,24 @@ export default function LocationInfo() {
 
           {/* Адреса */}
           <div className="flex items-center justify-between gap-3 lg:pr-8 lg:flex-1">
-            <div className="flex flex-col gap-2.5 flex-1 min-w-0">
+            <div className="flex flex-col gap-3 flex-1 min-w-0">
               {locations.map((loc) =>
                 loc.current ? (
-                  // Выбранный филиал (текущий сайт)
-                  <div
-                    key={loc.name}
-                    aria-current="true"
-                    className="relative rounded-xl bg-accent/15 ring-1 ring-accent/50 px-3.5 py-2.5"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-xs font-black uppercase tracking-wide text-accent">{loc.name}</p>
-                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-accent px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-white">
-                        <Check size={10} strokeWidth={3} /> Вы здесь
-                      </span>
-                    </div>
-                    <p className="text-sm lg:text-base text-white font-semibold mt-0.5">{loc.address}</p>
+                  // Текущий филиал — подсвечен (тонкая оранжевая полоска + акцентный цвет)
+                  <div key={loc.name} aria-current="true" className="relative pl-3">
+                    <span className="absolute left-0 top-1 bottom-1 w-[3px] rounded-full bg-accent" />
+                    <p className="text-sm font-black uppercase tracking-wide text-accent">{loc.name}</p>
+                    <p className="text-sm lg:text-base text-white/80 font-medium">{loc.address}</p>
                   </div>
                 ) : (
-                  // Другой филиал — переключаемый
-                  <a
-                    key={loc.name}
-                    href={loc.href}
-                    className="group rounded-xl border border-white/10 px-3.5 py-2.5 hover:border-accent/40 hover:bg-white/5 transition-colors"
-                  >
+                  // Другой филиал — приглушён, переключается (стрелка + подсветка на ховере)
+                  <a key={loc.name} href={loc.href} className="group relative block pl-3">
+                    <span className="absolute left-0 top-1 bottom-1 w-[3px] rounded-full bg-white/10 transition-colors group-hover:bg-accent/60" />
                     <div className="flex items-center justify-between gap-2">
-                      <p className="text-xs font-black uppercase tracking-wide text-white/45 group-hover:text-accent transition-colors">{loc.name}</p>
-                      <ArrowUpRight size={15} className="shrink-0 text-white/30 group-hover:text-accent transition-colors" />
+                      <p className="text-sm font-black uppercase tracking-wide text-white/40 transition-colors group-hover:text-accent">{loc.name}</p>
+                      <ArrowUpRight size={14} className="shrink-0 text-white/25 transition-colors group-hover:text-accent" />
                     </div>
-                    <p className="text-sm lg:text-base text-white/55 font-medium mt-0.5">{loc.address}</p>
+                    <p className="text-sm lg:text-base text-white/45 font-medium transition-colors group-hover:text-white/70">{loc.address}</p>
                   </a>
                 )
               )}
