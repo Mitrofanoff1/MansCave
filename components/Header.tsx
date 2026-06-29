@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { X, Menu, Phone, ChevronDown, ArrowUpRight } from 'lucide-react';
+import { X, Menu, Phone, ChevronDown, ArrowUpRight, Check } from 'lucide-react';
 import Link from 'next/link';
 
 interface HeaderProps {
@@ -11,8 +11,10 @@ interface HeaderProps {
 }
 
 const branches = [
-  { name: 'Филиал в Мурино', href: 'https://n1001306.yclients.com/company/929070/personal/menu?o=' },
-  { name: 'Филиал в Буграх', href: 'https://n1001306.yclients.com/company/929070/personal/menu?o=' },
+  // current: true — текущий сайт (этот филиал). Активная/«нажатая» кнопка.
+  { name: 'Филиал в Мурино', href: '/', current: true },
+  // TODO: вписать ссылку на сайт филиала в Буграх, когда он будет готов
+  { name: 'Филиал в Буграх', href: '#', current: false },
 ];
 
 const navLinks = [
@@ -50,18 +52,28 @@ export default function Header({ isMenuOpen, setIsMenuOpen }: HeaderProps) {
                 <ChevronDown size={14} className="transition-transform duration-200 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="bg-[#252220] border border-white/10 rounded-xl shadow-2xl overflow-hidden min-w-[200px]">
-                  {branches.map((b) => (
-                    <a
-                      key={b.name}
-                      href={b.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block px-5 py-3 text-sm font-bold text-white/70 hover:text-accent hover:bg-white/5 transition-colors"
-                    >
-                      {b.name}
-                    </a>
-                  ))}
+                <div className="bg-[#252220] border border-white/10 rounded-xl shadow-2xl overflow-hidden min-w-[230px]">
+                  {branches.map((b) =>
+                    b.current ? (
+                      <div
+                        key={b.name}
+                        aria-current="true"
+                        className="flex items-center justify-between gap-3 px-5 py-3 bg-accent text-white cursor-default"
+                      >
+                        <span className="text-sm font-bold">{b.name}</span>
+                        <Check size={15} className="shrink-0" />
+                      </div>
+                    ) : (
+                      <a
+                        key={b.name}
+                        href={b.href}
+                        className="group/br flex items-center justify-between gap-3 px-5 py-3 text-sm font-bold text-white/70 hover:text-accent hover:bg-white/5 transition-colors border-t border-white/10"
+                      >
+                        <span>{b.name}</span>
+                        <ArrowUpRight size={15} className="shrink-0 text-white/30 group-hover/br:text-accent transition-colors" />
+                      </a>
+                    )
+                  )}
                 </div>
               </div>
             </div>
@@ -118,19 +130,29 @@ export default function Header({ isMenuOpen, setIsMenuOpen }: HeaderProps) {
                   />
                 </button>
                 <div className={`overflow-hidden transition-all duration-300 ${branchOpen ? 'max-h-40' : 'max-h-0'}`}>
-                  <div className="flex flex-col gap-1 pl-3 pb-3 border-l border-accent/40 ml-1 mb-2">
-                    {branches.map((b) => (
-                      <a
-                        key={b.name}
-                        href={b.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="text-base font-bold text-white/70 hover:text-accent transition-colors py-1.5"
-                      >
-                        {b.name}
-                      </a>
-                    ))}
+                  <div className="flex flex-col gap-1.5 pl-3 pb-3 border-l border-accent/40 ml-1 mb-2">
+                    {branches.map((b) =>
+                      b.current ? (
+                        <div
+                          key={b.name}
+                          aria-current="true"
+                          className="flex items-center justify-between gap-2 rounded-lg bg-accent text-white px-3 py-2"
+                        >
+                          <span className="text-base font-bold">{b.name}</span>
+                          <Check size={16} className="shrink-0" />
+                        </div>
+                      ) : (
+                        <a
+                          key={b.name}
+                          href={b.href}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-base font-bold text-white/70 hover:text-accent hover:bg-white/5 transition-colors"
+                        >
+                          <span>{b.name}</span>
+                          <ArrowUpRight size={15} className="shrink-0 text-white/30" />
+                        </a>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
