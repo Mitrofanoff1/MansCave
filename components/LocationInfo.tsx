@@ -2,13 +2,12 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { ArrowUpRight } from 'lucide-react';
 
 const locations = [
   // current: true — филиал, на сайте которого мы сейчас (подсвечен как выбранный)
   { name: 'Филиал в Мурино:', address: 'Воронцовский бульвар, 22', href: '/', current: true },
-  // TODO: вписать ссылку на сайт филиала в Буграх, когда он будет готов
-  { name: 'Филиал в Буграх:', address: 'улица Шекспира, 1к1', href: '#', current: false },
+  // Сайт филиала в Буграх — домен барбершоп-бугры.рф (на момент правки ещё не запущен)
+  { name: 'Филиал в Буграх:', address: 'улица Шекспира, 1к1', href: 'https://xn----7sbcbbml6ejgcf1b3d9b.xn--p1ai', current: false },
 ];
 
 export default function LocationInfo() {
@@ -32,10 +31,7 @@ export default function LocationInfo() {
                   // Другой филиал — приглушён, переключается (стрелка + подсветка на ховере)
                   <a key={loc.name} href={loc.href} className="group relative block pl-3">
                     <span className="absolute left-0 top-1 bottom-1 w-[3px] rounded-full bg-white/10 transition-colors group-hover:bg-accent/60" />
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm font-black uppercase tracking-wide text-white/40 transition-colors group-hover:text-accent">{loc.name}</p>
-                      <ArrowUpRight size={14} className="shrink-0 text-white/25 transition-colors group-hover:text-accent" />
-                    </div>
+                    <p className="text-sm font-black uppercase tracking-wide text-white/40 transition-colors group-hover:text-accent">{loc.name}</p>
                     <p className="text-sm lg:text-base text-white/45 font-medium transition-colors group-hover:text-white/70">{loc.address}</p>
                   </a>
                 )
