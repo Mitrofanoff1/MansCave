@@ -208,14 +208,16 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const priceCls = 'w-16 lg:w-20 text-center text-sm lg:text-base font-black text-accent bg-transparent border border-transparent hover:border-white/10 focus:border-accent focus:bg-[#1a1817] rounded-lg px-1 py-1.5 outline-none transition-colors';
 
   return (
-    <main className="min-h-screen bg-[#1a1817] text-white pb-20">
-      <header className="sticky top-0 z-10 bg-[#1a1817]/95 backdrop-blur border-b border-white/10 px-4 py-4 flex items-center justify-between">
-        <h1 className="text-base lg:text-lg font-black uppercase tracking-tight">Админка Men&apos;s Cave</h1>
-        <div className="flex items-center gap-4">
-          {msg && <span className="text-sm text-accent font-semibold">{msg}</span>}
-          <a href="/" className="text-sm text-white/50 hover:text-white">На сайт</a>
-          <button onClick={onLogout} className="text-sm text-white/50 hover:text-white">Выйти</button>
+    <main className="min-h-screen bg-[#1a1817] text-white pb-20 overflow-x-hidden">
+      <header className="sticky top-0 z-10 bg-[#1a1817]/95 backdrop-blur border-b border-white/10 px-4 py-4">
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-base lg:text-lg font-black uppercase tracking-tight truncate">Админка Men&apos;s Cave</h1>
+          <div className="flex items-center gap-4 shrink-0">
+            <a href="/" className="text-sm text-white/50 hover:text-white">На сайт</a>
+            <button onClick={onLogout} className="text-sm text-white/50 hover:text-white">Выйти</button>
+          </div>
         </div>
+        {msg && <p className="mt-2 text-sm text-accent font-semibold">{msg}</p>}
       </header>
 
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-10">
