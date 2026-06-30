@@ -65,9 +65,12 @@ export default function BookingWidget() {
         />
       )}
 
-      <div className="fixed right-5 bottom-6 z-[200] flex flex-col items-center gap-4">
+      {/* pointer-events-none на контейнере: пустая зона колонки не перехватывает
+          клики (иначе невидимые пункты меню накрывают правую стрелку галереи).
+          Реальным кнопкам ниже возвращаем pointer-events-auto. */}
+      <div className="fixed right-5 bottom-6 z-[200] flex flex-col items-center gap-4 pointer-events-none">
         {/* Пункты меню (всплывают сверху) */}
-        <div className={`flex flex-col items-center gap-4 ${open ? '' : 'pointer-events-none'}`}>
+        <div className={`flex flex-col items-center gap-4 ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           {actions.map((a, i) => {
             const isTel = a.href.startsWith('tel:');
             return (
@@ -120,7 +123,7 @@ export default function BookingWidget() {
           onClick={() => setOpen((o) => !o)}
           aria-label="Связаться с барбершопом"
           aria-expanded={open}
-          className="relative w-16 h-16 flex items-center justify-center group"
+          className="relative w-16 h-16 flex items-center justify-center group pointer-events-auto"
         >
           {/* Пульсация — только когда меню закрыто, чтобы привлекать внимание */}
           {!open && (
