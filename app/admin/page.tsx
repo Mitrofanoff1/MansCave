@@ -154,9 +154,13 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       const { error } = await supabase.from('price_items').delete().in('id', deletedIds);
       if (error) { flash('Ошибка удаления: ' + error.message); setSavingPrices(false); return; }
     }
-    const existing = flat.filter((p) => p.id != null);
-    if (existing.length) {
-      const { error } = await supabase.from('price_items').upsert(existing);
+    // Существующие строки обновляем по id (без upsert — колонка id GENERATED ALWAYS)
+    for (const p of flat) {
+      if (p.id == null) continue;
+      const { error } = await supabase
+        .from('price_items')
+        .update({ category: p.category, name: p.name, barber: p.barber, top: p.top, sort: p.sort })
+        .eq('id', p.id);
       if (error) { flash('Ошибка сохранения: ' + error.message); setSavingPrices(false); return; }
     }
     const fresh = flat.filter((p) => p.id == null).map(({ id: _id, ...rest }) => rest);
