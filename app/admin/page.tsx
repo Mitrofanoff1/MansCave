@@ -109,7 +109,8 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     for (const it of (p.data as { id: number; category: string; name: string; barber: string | null; top: string | null }[]) || []) {
       let g = byCat.get(it.category);
       if (!g) { g = { name: it.category, services: [] }; byCat.set(it.category, g); gs.push(g); }
-      g.services.push({ id: it.id, name: it.name, barber: it.barber ?? '', top: it.top ?? '' });
+      // символ ₽ убираем — в админке только число (сайт добавит ₽ сам)
+      g.services.push({ id: it.id, name: it.name, barber: (it.barber ?? '').replace(/₽/g, '').trim(), top: (it.top ?? '').replace(/₽/g, '').trim() });
     }
     setGroups(gs);
     setDeletedIds([]);
@@ -147,7 +148,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       const cat = g.name.trim() || 'Без категории';
       for (const s of g.services) {
         order += 1;
-        flat.push({ id: s.id, category: cat, name: s.name.trim(), barber: s.barber.trim() || null, top: s.top.trim() || null, sort: order * 10 });
+        flat.push({ id: s.id, category: cat, name: s.name.trim(), barber: s.barber.replace(/₽/g, '').trim() || null, top: s.top.replace(/₽/g, '').trim() || null, sort: order * 10 });
       }
     }
     if (deletedIds.length) {

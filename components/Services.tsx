@@ -5,6 +5,14 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSiteContent } from '@/lib/useSiteContent';
 
+// Цена хранится без символа рубля — добавляем «₽» при показе.
+// Терпимо к старым данным, где «₽» уже был (убираем перед добавлением).
+const fmtPrice = (v: string | null) => {
+  if (!v) return '—';
+  const base = v.replace(/₽/g, '').trim();
+  return base ? `${base}₽` : '—';
+};
+
 export default function Services() {
   // Прайс берётся из Supabase в браузере (фолбэк — запечённый JSON)
   const { categories } = useSiteContent();
@@ -100,8 +108,8 @@ export default function Services() {
                   <div key={item.name} className="flex items-center justify-between gap-3 py-3 lg:py-4">
                     <p className="text-sm lg:text-base font-medium text-white/90 min-w-0">{item.name}</p>
                     <div className="flex items-center gap-3 lg:gap-6 shrink-0">
-                      <span className="w-16 lg:w-20 text-center text-sm lg:text-base font-black text-accent">{item.barber ?? '—'}</span>
-                      <span className="w-16 lg:w-20 text-center text-sm lg:text-base font-black text-accent">{item.top ?? '—'}</span>
+                      <span className="w-16 lg:w-20 text-center text-sm lg:text-base font-black text-accent">{fmtPrice(item.barber)}</span>
+                      <span className="w-16 lg:w-20 text-center text-sm lg:text-base font-black text-accent">{fmtPrice(item.top)}</span>
                     </div>
                   </div>
                 ))}
