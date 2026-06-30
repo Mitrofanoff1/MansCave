@@ -13,8 +13,8 @@ interface HeaderProps {
 const branches = [
   // current: true — текущий сайт (этот филиал). Активная/«нажатая» кнопка.
   { name: 'Филиал в Мурино', href: '/', current: true },
-  // TODO: вписать ссылку на сайт филиала в Буграх, когда он будет готов
-  { name: 'Филиал в Буграх', href: '#', current: false },
+  // Сайт филиала в Буграх — домен барбершоп-бугры.рф
+  { name: 'Филиал в Буграх', href: 'https://xn----7sbcbbml6ejgcf1b3d9b.xn--p1ai', current: false },
 ];
 
 const navLinks = [
