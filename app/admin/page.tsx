@@ -76,11 +76,11 @@ function Login() {
   );
 }
 
-// ---------- Маленькие UI-кнопки ----------
+// ---------- Маленькая кнопка-иконка ----------
 function IconBtn({ onClick, disabled, title, children }: { onClick: () => void; disabled?: boolean; title: string; children: React.ReactNode }) {
   return (
     <button type="button" onClick={onClick} disabled={disabled} title={title}
-      className="w-8 h-8 shrink-0 rounded-lg bg-white/5 enabled:hover:bg-white/15 text-white/60 enabled:hover:text-white disabled:opacity-25 transition-colors flex items-center justify-center text-base leading-none">
+      className="w-6 h-6 shrink-0 rounded-md bg-white/5 enabled:hover:bg-white/15 text-white/50 enabled:hover:text-white disabled:opacity-20 transition-colors flex items-center justify-center text-xs leading-none">
       {children}
     </button>
   );
@@ -104,7 +104,6 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     ]);
     setSettings((s.data as Setting[]) || []);
 
-    // Группируем плоский прайс по категориям, сохраняя порядок
     const gs: Category[] = [];
     const byCat = new Map<string, Category>();
     for (const it of (p.data as { id: number; category: string; name: string; barber: string | null; top: string | null }[]) || []) {
@@ -121,7 +120,6 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
   const flash = (t: string) => { setMsg(t); window.setTimeout(() => setMsg(''), 3500); };
 
-  // Клонируем groups и мутируем — удобно для вложенных правок
   const mutate = (fn: (g: Category[]) => void) =>
     setGroups((prev) => {
       const next = prev.map((c) => ({ ...c, services: c.services.map((s) => ({ ...s })) }));
@@ -143,21 +141,15 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   // --- прайс ---
   const savePrices = async () => {
     setSavingPrices(true);
-
-    // Разворачиваем группы в плоский список, порядок -> sort (10,20,30…)
     const flat: { id: number | null; category: string; name: string; barber: string | null; top: string | null; sort: number }[] = [];
     let order = 0;
     for (const g of groups) {
       const cat = g.name.trim() || 'Без категории';
       for (const s of g.services) {
         order += 1;
-        flat.push({
-          id: s.id, category: cat, name: s.name.trim(),
-          barber: s.barber.trim() || null, top: s.top.trim() || null, sort: order * 10,
-        });
+        flat.push({ id: s.id, category: cat, name: s.name.trim(), barber: s.barber.trim() || null, top: s.top.trim() || null, sort: order * 10 });
       }
     }
-
     if (deletedIds.length) {
       const { error } = await supabase.from('price_items').delete().in('id', deletedIds);
       if (error) { flash('Ошибка удаления: ' + error.message); setSavingPrices(false); return; }
@@ -172,13 +164,12 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       const { error } = await supabase.from('price_items').insert(fresh);
       if (error) { flash('Ошибка добавления: ' + error.message); setSavingPrices(false); return; }
     }
-
     setSavingPrices(false);
     flash('Прайс сохранён ✓');
     load();
   };
 
-  // --- операции с категориями/услугами ---
+  // --- операции ---
   const setCatName = (ci: number, v: string) => mutate((g) => { g[ci].name = v; });
   const addCategory = () => setGroups((p) => [...p, { name: 'Новая категория', services: [{ id: null, name: '', barber: '', top: '' }] }]);
   const removeCategory = (ci: number) =>
@@ -206,12 +197,14 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
   if (loading) return <Centered>Загрузка данных…</Centered>;
 
-  // превью оффера
   const get = (k: string) => settings.find((s) => s.key === k)?.value ?? '';
-  const offerPreview = `${get('offer_before')} ${get('offer_gift')} ${get('offer_after')}`.trim();
+
+  // Поля ввода в стиле сайта
+  const nameCls = 'flex-1 min-w-0 bg-transparent text-sm lg:text-base font-medium text-white/90 border border-transparent hover:border-white/10 focus:border-accent focus:bg-[#1a1817] rounded-lg px-2 py-1.5 outline-none transition-colors';
+  const priceCls = 'w-16 lg:w-20 text-center text-sm lg:text-base font-black text-accent bg-transparent border border-transparent hover:border-white/10 focus:border-accent focus:bg-[#1a1817] rounded-lg px-1 py-1.5 outline-none transition-colors';
 
   return (
-    <main className="min-h-screen bg-[#1a1817] text-white pb-16">
+    <main className="min-h-screen bg-[#1a1817] text-white pb-20">
       <header className="sticky top-0 z-10 bg-[#1a1817]/95 backdrop-blur border-b border-white/10 px-4 py-4 flex items-center justify-between">
         <h1 className="text-base lg:text-lg font-black uppercase tracking-tight">Админка Men&apos;s Cave</h1>
         <div className="flex items-center gap-4">
@@ -229,7 +222,6 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           <p className="text-sm text-white/40 mb-4">Крупный текст-акция в шапке сайта.</p>
 
           <div className="bg-[#252220] border border-white/10 rounded-2xl p-5 space-y-4">
-            {/* Превью */}
             <div className="rounded-xl bg-[#1a1817] border border-white/10 px-4 py-3">
               <span className="block text-[10px] uppercase tracking-wide text-white/30 mb-1">Как видно на сайте</span>
               <p className="font-black uppercase leading-tight text-sm">
@@ -257,93 +249,74 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           </div>
         </section>
 
-        {/* ПРАЙС */}
+        {/* ПРАЙС — выглядит как на сайте */}
         <section>
           <h2 className="text-lg font-black uppercase tracking-tight mb-1">Прайс-лист</h2>
-          <p className="text-sm text-white/40 mb-4">У каждой услуги две цены: <b className="text-white/70">Барбер</b> и <b className="text-white/70">Топ-барбер</b>.</p>
+          <p className="text-sm text-white/40 mb-4">Редактируйте прямо в макете прайса: нажмите на название или цену и впишите своё.</p>
 
-          <div className="space-y-5">
+          {/* Карточка прайса — те же стили, что на сайте */}
+          <div className="bg-[#252220] rounded-3xl border border-white/10 shadow-2xl p-4 lg:p-6">
+            {/* Шапка с колонками — как на сайте */}
+            <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/10">
+              <span className="flex-1 text-sm uppercase font-black text-white/40">Прайс-лист</span>
+              <span className="w-16 lg:w-20 text-center text-[9px] lg:text-xs uppercase text-white/40 font-bold">Барбер</span>
+              <span className="w-16 lg:w-20 text-center text-[9px] lg:text-xs uppercase text-white/40 font-bold">Топ-барбер</span>
+              <span className="w-6 shrink-0" />
+            </div>
+
             {groups.map((cat, ci) => (
-              <div key={ci} className="bg-[#252220] border border-white/10 rounded-2xl p-4 lg:p-5">
-                {/* Шапка категории */}
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-[10px] uppercase tracking-wide text-white/30 shrink-0">Категория</span>
-                  <input
-                    value={cat.name}
-                    onChange={(e) => setCatName(ci, e.target.value)}
-                    className="flex-1 min-w-0 bg-transparent border-b border-white/10 focus:border-accent text-base font-bold px-1 py-1 outline-none"
-                  />
-                  <IconBtn onClick={() => moveCategory(ci, -1)} disabled={ci === 0} title="Выше">↑</IconBtn>
-                  <IconBtn onClick={() => moveCategory(ci, 1)} disabled={ci === groups.length - 1} title="Ниже">↓</IconBtn>
-                  <IconBtn onClick={() => removeCategory(ci)} title="Удалить категорию">🗑</IconBtn>
+              <div key={ci} className="mb-6 last:mb-1">
+                {/* Категория — оранжевая «вкладка», как на сайте */}
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="inline-flex items-center bg-accent rounded-full pl-4 pr-1.5 py-1 min-w-0">
+                    <input
+                      value={cat.name}
+                      onChange={(e) => setCatName(ci, e.target.value)}
+                      placeholder="Категория"
+                      className="bg-transparent text-white text-xs font-bold uppercase tracking-wide outline-none w-[40vw] max-w-[200px] placeholder:text-white/60"
+                    />
+                  </div>
+                  <div className="ml-auto flex items-center gap-1">
+                    <IconBtn onClick={() => moveCategory(ci, -1)} disabled={ci === 0} title="Категорию выше">↑</IconBtn>
+                    <IconBtn onClick={() => moveCategory(ci, 1)} disabled={ci === groups.length - 1} title="Категорию ниже">↓</IconBtn>
+                    <IconBtn onClick={() => removeCategory(ci)} title="Удалить категорию">🗑</IconBtn>
+                  </div>
                 </div>
 
-                {/* Услуги */}
-                <div className="space-y-3">
+                {/* Услуги — строки как на сайте */}
+                <div className="divide-y divide-white/5">
                   {cat.services.map((svc, si) => (
-                    <div key={svc.id ?? `new-${si}`} className="rounded-xl bg-[#1a1817] border border-white/10 p-3">
-                      <div className="flex items-start gap-2">
-                        <div className="flex-1 min-w-0 space-y-2">
-                          <div>
-                            <label className="block text-[10px] uppercase tracking-wide text-white/40 mb-1">Услуга</label>
-                            <input
-                              value={svc.name}
-                              onChange={(e) => setSvc(ci, si, 'name', e.target.value)}
-                              placeholder="Название услуги"
-                              className="w-full bg-[#252220] border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
-                            />
-                          </div>
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
-                              <label className="block text-[10px] uppercase tracking-wide text-white/40 mb-1">Барбер ₽</label>
-                              <input
-                                value={svc.barber}
-                                onChange={(e) => setSvc(ci, si, 'barber', e.target.value)}
-                                placeholder="напр. 1700₽"
-                                className="w-full bg-[#252220] border border-white/10 rounded-lg px-3 py-2 text-sm text-center outline-none focus:border-accent"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-[10px] uppercase tracking-wide text-white/40 mb-1">Топ-барбер ₽</label>
-                              <input
-                                value={svc.top}
-                                onChange={(e) => setSvc(ci, si, 'top', e.target.value)}
-                                placeholder="напр. 1900₽"
-                                className="w-full bg-[#252220] border border-white/10 rounded-lg px-3 py-2 text-sm text-center outline-none focus:border-accent"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-1 shrink-0">
-                          <IconBtn onClick={() => moveSvc(ci, si, -1)} disabled={si === 0} title="Выше">↑</IconBtn>
-                          <IconBtn onClick={() => moveSvc(ci, si, 1)} disabled={si === cat.services.length - 1} title="Ниже">↓</IconBtn>
-                          <IconBtn onClick={() => removeSvc(ci, si)} title="Удалить услугу">×</IconBtn>
-                        </div>
+                    <div key={svc.id ?? `new-${si}`} className="group flex items-center gap-2 py-2">
+                      <input value={svc.name} onChange={(e) => setSvc(ci, si, 'name', e.target.value)} placeholder="Название услуги" className={nameCls} />
+                      <input value={svc.barber} onChange={(e) => setSvc(ci, si, 'barber', e.target.value)} placeholder="—" className={priceCls} />
+                      <input value={svc.top} onChange={(e) => setSvc(ci, si, 'top', e.target.value)} placeholder="—" className={priceCls} />
+                      <div className="w-6 shrink-0 flex flex-col items-center gap-0.5 opacity-40 group-hover:opacity-100 transition-opacity">
+                        <button type="button" onClick={() => moveSvc(ci, si, -1)} disabled={si === 0} title="Выше" className="text-[10px] leading-none text-white/60 hover:text-white disabled:opacity-20">▲</button>
+                        <button type="button" onClick={() => removeSvc(ci, si)} title="Удалить услугу" className="text-sm leading-none text-white/50 hover:text-red-400">×</button>
+                        <button type="button" onClick={() => moveSvc(ci, si, 1)} disabled={si === cat.services.length - 1} title="Ниже" className="text-[10px] leading-none text-white/60 hover:text-white disabled:opacity-20">▼</button>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <button onClick={() => addSvc(ci)} className="mt-3 text-sm font-bold text-accent hover:text-[#d4641f]">
-                  + Добавить услугу
-                </button>
+                <button onClick={() => addSvc(ci)} className="mt-2 text-xs font-bold text-accent hover:text-[#d4641f]">+ услуга</button>
               </div>
             ))}
-          </div>
 
-          <button onClick={addCategory} className="mt-5 w-full border border-dashed border-white/15 hover:border-accent/60 text-white/60 hover:text-accent rounded-2xl py-3 text-sm font-bold transition-colors">
-            + Добавить категорию
-          </button>
+            <button onClick={addCategory} className="mt-2 w-full border border-dashed border-white/15 hover:border-accent/60 text-white/60 hover:text-accent rounded-xl py-2.5 text-sm font-bold transition-colors">
+              + Добавить категорию
+            </button>
+          </div>
         </section>
 
       </div>
 
-      {/* Нижняя панель сохранения прайса */}
+      {/* Нижняя панель сохранения */}
       <div className="fixed bottom-0 left-0 right-0 z-10 bg-[#1a1817]/95 backdrop-blur border-t border-white/10 px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
-          <span className="text-xs text-white/40">Изменения появятся на сайте сразу после сохранения.</span>
+          <span className="text-xs text-white/40 hidden sm:block">Изменения появятся на сайте сразу после сохранения.</span>
           <button onClick={savePrices} disabled={savingPrices}
-            className="bg-accent hover:bg-[#d4641f] disabled:opacity-50 font-bold py-2.5 px-6 rounded-lg uppercase text-sm tracking-wide transition-colors shrink-0">
+            className="bg-accent hover:bg-[#d4641f] disabled:opacity-50 font-bold py-2.5 px-6 rounded-lg uppercase text-sm tracking-wide transition-colors shrink-0 w-full sm:w-auto">
             {savingPrices ? 'Сохранение…' : 'Сохранить прайс'}
           </button>
         </div>
