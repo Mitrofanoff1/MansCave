@@ -4,9 +4,10 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Phone, MapPin, Map } from 'lucide-react';
-import siteContent from '@/content/site-content.json';
+import { useSiteContent } from '@/lib/useSiteContent';
 
 export default function Footer() {
+  const siteContent = useSiteContent();
   return (
     <footer id="footer">
 

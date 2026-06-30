@@ -2,11 +2,10 @@
 
 import React from 'react';
 import { Play } from 'lucide-react';
-import siteContent from '@/content/site-content.json';
-
-const { offer } = siteContent;
+import { useSiteContent } from '@/lib/useSiteContent';
 
 export default function Hero() {
+  const { offer } = useSiteContent();
   return (
     <section id="hero" className="relative overflow-hidden bg-dark text-white py-12 lg:py-24 min-h-[640px] lg:min-h-[720px] flex items-center">
       <div id="booking" className="absolute top-0" />

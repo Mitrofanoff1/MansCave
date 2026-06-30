@@ -3,14 +3,14 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import siteContent from '@/content/site-content.json';
-
-// Прайс берётся из Supabase (запекается в content/site-content.json при сборке)
-type PriceItem = { name: string; barber: string | null; top: string | null };
-const categories = siteContent.categories as { name: string; items: PriceItem[] }[];
+import { useSiteContent } from '@/lib/useSiteContent';
 
 export default function Services() {
+  // Прайс берётся из Supabase в браузере (фолбэк — запечённый JSON)
+  const { categories } = useSiteContent();
   const [active, setActive] = useState(0);
+  // Индекс может выйти за границы, если в Supabase убрали категорию — подстраховка
+  const safeActive = Math.min(active, Math.max(0, categories.length - 1));
   const [direction, setDirection] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const touchStartX = useRef<number | null>(null);
@@ -96,7 +96,7 @@ export default function Services() {
                 transition={{ duration: 0.25, ease: 'easeOut' }}
                 className="divide-y divide-white/5"
               >
-                {categories[active].items.map((item) => (
+                {(categories[safeActive]?.items ?? []).map((item) => (
                   <div key={item.name} className="flex items-center justify-between gap-3 py-3 lg:py-4">
                     <p className="text-sm lg:text-base font-medium text-white/90 min-w-0">{item.name}</p>
                     <div className="flex items-center gap-3 lg:gap-6 shrink-0">
